@@ -1233,13 +1233,23 @@ function showErrorFeedback(element) {
 
 function openCategory(category) {
   if (category && category.classList.contains('folder-item')) {
+    // 清除所有选中状态
     document.querySelectorAll('#categories-list li').forEach(function (item) {
       item.classList.remove('bg-emerald-500');
     });
+    
+    // 设置当前选中状态
     category.classList.add('bg-emerald-500');
 
     if (category.dataset.id) {
-      updateBookmarksDisplay(category.dataset.id);
+      // 同步更新所有状态
+      updateBookmarksDisplay(category.dataset.id).then(() => {
+        // 确保面包屑导航正确显示当前文件夹路径
+        updateFolderName(category.dataset.id);
+        
+        // 保存最后访问的文件夹
+        chrome.storage.local.set({ lastViewedFolder: category.dataset.id });
+      });
     }
   }
 }
@@ -1563,6 +1573,8 @@ function updateBookmarksDisplay(parentId, movedItemId, newIndex) {
       // 如果有缓存且不是移动操作，直接使用缓存数据
       console.log('Using cached bookmarks for:', parentId);
       displayBookmarks({ id: parentId, children: cached.bookmarks });
+      // 确保面包屑导航也更新
+      updateFolderName(parentId);
       resolve();
       return;
     }
@@ -1711,7 +1723,10 @@ function navigateToPath(path) {
 
     function navigateRecursive(index) {
       if (index >= pathParts.length) {
+        // 成功到达目标路径，更新显示
         updateBookmarksDisplay(currentId);
+        updateFolderName(currentId);
+        selectSidebarFolder(currentId);
         return;
       }
 
@@ -1721,7 +1736,11 @@ function navigateToPath(path) {
           currentId = matchingChild.id;
           navigateRecursive(index + 1);
         } else {
+          // 找不到匹配的子文件夹，使用当前能到达的最深层级
+          console.warn('无法找到路径:', pathParts[index], '在层级', index);
           updateBookmarksDisplay(currentId);
+          updateFolderName(currentId);
+          selectSidebarFolder(currentId);
         }
       });
     }
@@ -3762,8 +3781,10 @@ document.addEventListener('DOMContentLoaded', function () {
   toggleSidebarButton.addEventListener('click', toggleSidebar);
 
   document.addEventListener('click', function (event) {
-    if (event.target.closest('#categories-list li')) {
-      updateBookmarkCards();
+    const categoryElement = event.target.closest('#categories-list li');
+    if (categoryElement) {
+      // 同步更新所有状态
+      openCategory(categoryElement);
     }
   });
 
