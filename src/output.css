@@ -2221,6 +2221,15 @@ input:checked+.slider:before {
   transition: background-color 0.2s;
 }
 
+/* 深色模式适配 */
+[data-theme="dark"] .setting-option {
+  background-color: #2d2d2d;
+}
+
+[data-theme="dark"] .setting-option:hover {
+  background-color: #363636;
+}
+
 .switch-label {
   margin-right: 1rem;
 }
