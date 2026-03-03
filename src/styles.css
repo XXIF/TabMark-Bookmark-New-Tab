@@ -1081,6 +1081,113 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-top-color: #10b981;
 }
 
+/* Quick Link Item 毛玻璃拟态效果 - 圆形透明 */
+.quick-link-item-container {
+    position: relative;
+    display: inline-block;
+    margin: 8px;
+    transition: transform 0.3s ease;
+}
+
+.quick-link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* 圆形 */
+    background: rgb(255 255 255 / 0.1); /* 透明背景 */
+    box-shadow: inset 8px 8px 16px rgb(255 255 255 / 0.2),
+                inset -8px -8px 16px rgb(255 255 255 / 0.05);
+    backdrop-filter: blur(16px); /* 更强的毛玻璃效果 */
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.2); /* 更透明的边框 */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-link-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(255 255 255 / 0.15); /* 更透明的覆盖层 */
+    border-radius: 50%; /* 圆形 */
+    z-index: 1;
+}
+
+.quick-link-item img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    z-index: 2;
+    position: relative;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.quick-link-item:hover {
+    transform: translateY(-2px);
+    background: rgb(255 255 255 / 0.15); /* 悬停时略微增加透明度 */
+    box-shadow: inset 8px 8px 16px rgb(255 255 255 / 0.3),
+                inset -8px -8px 16px rgb(255 255 255 / 0.1),
+                0 12px 28px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px); /* 悬停时更强的模糊效果 */
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.quick-link-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Quick Link Item 文字阴影效果 */
+.quick-link-item-container > span {
+    font-size: 12px;
+    font-family: "Arial Black", sans-serif;
+    color: #000000;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0px 0px 4px #888888; /* 浅色模式下近似灰色 */
+    margin-top: 8px;
+    text-align: center;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 暗色模式下的 Quick Link Item 样式 - 圆形透明 */
+[data-theme="dark"] .quick-link-item {
+    background: rgb(0 0 0 / 0.2); /* 透明黑色背景 */
+    box-shadow: inset 8px 8px 16px rgb(0 0 0 / 0.3),
+                inset -8px -8px 16px rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 0.15);
+}
+
+[data-theme="dark"] .quick-link-item::before {
+    background: rgb(255 255 255 / 0.08); /* 更透明的覆盖层 */
+}
+
+[data-theme="dark"] .quick-link-item-container > span {
+    color: #ffffff;
+    text-shadow: 0px 0px 4px #ffffff; /* 深色模式下近似白色 */
+}
+
+[data-theme="dark"] .quick-link-item:hover {
+    background: rgb(0 0 0 / 0.25); /* 悬停时略微增加透明度 */
+    box-shadow: inset 8px 8px 16px rgb(0 0 0 / 0.4),
+                inset -8px -8px 16px rgb(255 255 255 / 0.1),
+                0 12px 28px rgba(255, 255, 255, 0.2); /* 深色模式下悬停阴影为近似白色 */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
 /* 暗色模式下的复选框样式 */
 [data-theme="dark"] .custom-checkbox input:checked + .checkmark {
   background-color: #10b981;
