@@ -1170,8 +1170,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transition: all 0.3s ease;
     padding: 5px; /* 添加内边距确保文字完整显示 */
     box-sizing: border-box; /* 确保内边距不影响宽度计算 */
-    color: #ffffff;
-    text-shadow: 0px 0px 6px #000000, 0px 0px 4px rgba(0, 0, 0, 0.8);
+    color: #000000;
+    text-shadow: 0px 0px 6px #ffffff, 0px 0px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* 暗色模式下的 Quick Link Item 样式 - 圆形透明 */
@@ -1189,8 +1189,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 [data-theme="dark"] .quick-link-item-container > span {
-    color: #000000;
-    text-shadow: 0px 0px 6px #ffffff, 0px 0px 4px rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    text-shadow: 0px 0px 6px #000000, 0px 0px 4px rgba(255, 255, 255, 0.8);
 }
 
 [data-theme="dark"] .quick-link-item:hover {
