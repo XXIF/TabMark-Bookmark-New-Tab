@@ -483,13 +483,7 @@ const ColorCache = {
 
 
 
-// 页面加载时更新图标
-document.addEventListener('DOMContentLoaded', () => {
-  const defaultEngine = SearchEngineManager.getDefaultEngine();
-  if (defaultEngine) {
-    updateSearchEngineIcon(defaultEngine);
-  }
-});
+
 
 // 同样，将这个函数也移到全作用域
 function setDefaultIcon(iconElement) {
@@ -993,19 +987,55 @@ document.addEventListener('DOMContentLoaded', function () {
   // 调用 updateBookmarkCards
   updateBookmarkCards();
   
-  updateSearchEngineIcon(defaultSearchEngine);
+  // 直接设置搜索引擎图标为Bing
+  function setBingIconDirectly() {
+    const searchEngineIcon = document.getElementById('search-engine-icon');
+    if (!searchEngineIcon) return;
+    
+    // 强制设置为Bing图标
+    searchEngineIcon.src = '../images/bing-logo.png';
+    searchEngineIcon.alt = '必应 Search';
+    
+    console.log('[Icon] Directly set icon to Bing');
+  }
 
+  // 确保搜索引擎图标正确初始化
+  function ensureSearchEngineIcon() {
+    const searchEngineIcon = document.getElementById('search-engine-icon');
+    if (!searchEngineIcon) return;
+    
+    // 如果图标仍然是默认的Google图标，强制更新为Bing
+    if (searchEngineIcon.src.includes('google-logo.svg') || 
+        searchEngineIcon.src.includes('placeholder-icon.svg')) {
+      updateSearchEngineIcon(defaultSearchEngine);
+      setBingIconDirectly();
+    }
+  }
+
+  updateSearchEngineIcon(defaultSearchEngine);
+  setBingIconDirectly();
+  
   if (searchEngineIcon.src === '') {      
     searchEngineIcon.src = '../images/placeholder-icon.svg';
   }
+  
+  // 多次确保图标正确更新
   setTimeout(() => {
     updateSearchEngineIcon(defaultSearchEngine);
+    setBingIconDirectly();
+    ensureSearchEngineIcon();
   }, 0);
+  
+  setTimeout(() => {
+    setBingIconDirectly();
+    ensureSearchEngineIcon();
+  }, 100);
+  
+  setTimeout(() => {
+    setBingIconDirectly();
+  }, 500);
 
-  // 修改 updateSearchEngineIcon 函数
-  function updateSearchEngineIcon(engineName) {
-    setSearchEngineIcon(engineName);
-  }
+
 
   // 更新侧边栏默认书签指示器和选中状态
   updateSidebarDefaultBookmarkIndicator();
